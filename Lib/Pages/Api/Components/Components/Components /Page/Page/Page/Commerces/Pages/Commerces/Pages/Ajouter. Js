@@ -1,0 +1,38 @@
+import { useState } from 'react';
+import Layout from '../components/Layout';
+
+export default function Ajouter() {
+  const [form, setForm] = useState({ nom: '', categorie: '', ville: '', pays: '', description: '' });
+  const [message, setMessage] = useState('');
+
+  const update = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+
+  const submit = async (e) => {
+    e.preventDefault();
+    const res = await fetch('/api/commerces', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    });
+    setMessage(res.ok ? '✅ Merci ! (version démo : le commerce n\'est pas encore enregistré)' : '❌ Merci de remplir nom, ville et pays.');
+  };
+
+  const field = { display: 'block', width: '100%', padding: 12, margin: '8px 0 16px', borderRadius: 8, border: '1px solid #ccc', fontSize: 16 };
+
+  return (
+    <Layout>
+      <div className="container" style={{ paddingTop: 40, maxWidth: 600 }}>
+        <h1>Ajouter mon commerce</h1>
+        <form onSubmit={submit}>
+          <label>Nom *<input style={field} value={form.nom} onChange={update('nom')} /></label>
+          <label>Catégorie<input style={field} value={form.categorie} onChange={update('categorie')} /></label>
+          <label>Ville *<input style={field} value={form.ville} onChange={update('ville')} /></label>
+          <label>Pays *<input style={field} value={form.pays} onChange={update('pays')} /></label>
+          <label>Description<textarea style={{ ...field, height: 100 }} value={form.description} onChange={update('description')} /></label>
+          <button type="submit" style={{ background: '#667eea', color: 'white', border: 'none', padding: '14px 30px', borderRadius: 50, fontWeight: 'bold', cursor: 'pointer' }}>Envoyer</button>
+        </form>
+        {message && <p style={{ marginTop: 20 }}>{message}</p>}
+      </div>
+    </Layout>
+  );
+}
