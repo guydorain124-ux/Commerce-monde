@@ -1,0 +1,9 @@
+export const commerces = [
+  { id: '1', nom: 'Chez Mama Nzaba', categorie: 'Restaurant', ville: 'Brazzaville', pays: 'Congo', description: 'Cuisine congolaise traditionnelle : poulet moambe, saka-saka et poisson braisé, dans une ambiance familiale.' },
+  { id: '2', nom: 'Patty Brazza', categorie: 'Pâtisserie', ville: 'Brazzaville', pays: 'Congo', description: 'Gâteaux d\'anniversaire, beignets et viennoiseries faits maison chaque matin.' },
+  { id: '3', nom: 'Atelier Wax Pointe-Noire', categorie: 'Mode', ville: 'Pointe-Noire', pays: 'Congo', description: 'Vêtements et accessoires en tissu wax, créations sur mesure par des couturiers locaux.' },
+  { id: '4', nom: 'Teranga Boutique', categorie: 'Artisanat', ville: 'Dakar', pays: 'Sénégal', description: 'Bijoux, paniers tressés et objets décoratifs réalisés par des artisans sénégalais.' },
+  { id: '5', nom: 'Maquis Le Palmier', categorie: 'Restaurant', ville: 'Abidjan', pays: 'Côte d\'Ivoire', description: 'Poulet braisé, attiéké et alloco servis en terrasse.' },
+  { id: '6', nom: 'Librairie du Fleuve', categorie: 'Librairie', ville: 'Kinshasa', pays: 'RD Congo', description: 'Livres scolaires, romans africains et fournitures de bureau.' },
+  { id: '7', nom: 'Café des Arts', categorie: 'Café', ville: 'Paris', pays: 'France', description: 'Café de spécialité et pâtisseries, avec expositions d\'artistes locaux.' }
+];
