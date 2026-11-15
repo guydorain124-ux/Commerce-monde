@@ -1,0 +1,17 @@
+import { commerces } from '../../../lib/data';
+
+export default function handler(req, res) {
+  if (req.method === 'GET') {
+    return res.status(200).json(commerces);
+  }
+  if (req.method === 'POST') {
+    const { nom, categorie, ville, pays, description } = req.body || {};
+    if (!nom || !ville || !pays) {
+      return res.status(400).json({ error: 'Nom, ville et pays sont obligatoires' });
+    }
+    // Version démo : rien n'est enregistré (pas encore de base de données).
+    return res.status(201).json({ ok: true, demo: true, commerce: { nom, categorie, ville, pays, description } });
+  }
+  res.setHeader('Allow', ['GET', 'POST']);
+  return res.status(405).end();
+}
