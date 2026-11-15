@@ -1,0 +1,12 @@
+import Layout from '../components/Layout';
+
+export default function Mentions() {
+  return (
+    <Layout>
+      <div className="container" style={{ paddingTop: 40, maxWidth: 700 }}>
+        <h1>Mentions légales</h1>
+        <p>Cette page sera complétée prochainement.</p>
+      </div>
+    </Layout>
+  );
+}
