@@ -1,0 +1,23 @@
+import Link from 'next/link';
+import Layout from '../../components/Layout';
+import { commerces } from '../../lib/data';
+
+export async function getServerSideProps({ params }) {
+  const commerce = commerces.find((c) => c.id === params.id);
+  if (!commerce) return { notFound: true };
+  return { props: { commerce } };
+}
+
+export default function Fiche({ commerce }) {
+  return (
+    <Layout>
+      <div className="container" style={{ paddingTop: 40, maxWidth: 800 }}>
+        <Link href="/commerces" style={{ color: '#667eea', textDecoration: 'none' }}>← Retour aux commerces</Link>
+        <h1>{commerce.nom}</h1>
+        <p style={{ color: '#667eea', fontWeight: 'bold' }}>{commerce.categorie}</p>
+        <p>📍 {commerce.ville}, {commerce.pays}</p>
+        <p style={{ lineHeight: 1.6 }}>{commerce.description}</p>
+      </div>
+    </Layout>
+  );
+}
