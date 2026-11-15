@@ -1,0 +1,46 @@
+import Link from 'next/link';
+
+export default function Layout({ children }) {
+  return (
+    <div>
+      <nav className="navbar">
+        <div className="container">
+          <Link href="/" className="logo">🌍 MonAnnuaire</Link>
+          <div className="nav-links">
+            <Link href="/">Accueil</Link>
+            <Link href="/commerces">Commerces</Link>
+            <Link href="/ajouter" className="nav-btn">Ajouter</Link>
+          </div>
+        </div>
+      </nav>
+      <main>{children}</main>
+      <footer className="footer">
+        <div className="container">
+          <p>© 2026 MonAnnuaire - Tous droits réservés</p>
+          <div className="footer-links">
+            <Link href="/mentions-legales">Mentions légales</Link>
+            <Link href="/contact">Contact</Link>
+          </div>
+        </div>
+      </footer>
+      <style jsx>{`
+        .navbar { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 15px 0; position: sticky; top: 0; z-index: 100; }
+        .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .footer { background: #2d3436; color: white; padding: 30px 0; margin-top: 60px; }
+        .footer .container { display: flex; justify-content: space-between; align-items: center; }
+        .footer-links { display: flex; gap: 20px; }
+        @media (max-width: 768px) {
+          .navbar .container { flex-direction: column; gap: 15px; }
+          .footer .container { flex-direction: column; gap: 15px; text-align: center; }
+        }
+      `}</style>
+      <style jsx global>{`
+        .logo { font-size: 24px; font-weight: bold; color: #667eea; text-decoration: none; }
+        .nav-links a { text-decoration: none; color: #333; }
+        .nav-links a.nav-btn { background: #667eea; color: white; padding: 10px 20px; border-radius: 50px; font-weight: bold; }
+        .footer-links a { color: #ccc; text-decoration: none; }
+      `}</style>
+    </div>
+  );
+}
