@@ -1,0 +1,37 @@
+import { useState } from 'react';
+import Layout from '../../components/Layout';
+import SearchBar from '../../components/SearchBar';
+import CommerceCard from '../../components/CommerceCard';
+import { commerces } from '../../lib/data';
+
+export async function getServerSideProps() {
+  return { props: { commerces } };
+}
+
+export default function Commerces({ commerces }) {
+  const [filtered, setFiltered] = useState(commerces);
+
+  const handleSearch = (query) => {
+    const q = (query || '').trim().toLowerCase();
+    setFiltered(
+      !q ? commerces : commerces.filter((c) =>
+        c.nom.toLowerCase().includes(q) || c.ville.toLowerCase().includes(q) || c.pays.toLowerCase().includes(q) || c.categorie.toLowerCase().includes(q)
+      )
+    );
+  };
+
+  return (
+    <Layout>
+      <div className="container" style={{ paddingTop: 40 }}>
+        <h1>Tous les commerces</h1>
+        <SearchBar onSearch={handleSearch} />
+        <div className="commerce-grid" style={{ marginTop: 30 }}>
+          {filtered.length > 0 ? filtered.map((c) => <CommerceCard key={c.id} commerce={c} />) : <p>Aucun commerce trouvé</p>}
+        </div>
+      </div>
+      <style jsx global>{`
+        .commerce-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+      `}</style>
+    </Layout>
+  );
+}
