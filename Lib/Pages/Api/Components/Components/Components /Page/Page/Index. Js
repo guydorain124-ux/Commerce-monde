@@ -1,0 +1,108 @@
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Layout from '../components/Layout';
+import SearchBar from '../components/SearchBar';
+import CommerceCard from '../components/CommerceCard';
+
+export default function Home() {
+  const [commerces, setCommerces] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchCommerces();
+  }, []);
+
+  const fetchCommerces = async () => {
+    try {
+      const res = await fetch('/api/commerces');
+      const data = await res.json();
+      setCommerces(data);
+      setFiltered(data);
+    } catch (error) {
+      console.error('Erreur:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = (query) => {
+    const q = (query || '').trim().toLowerCase();
+    if (!q) {
+      setFiltered(commerces);
+      return;
+    }
+    setFiltered(
+      commerces.filter((c) =>
+        c.nom.toLowerCase().includes(q) ||
+        c.ville.toLowerCase().includes(q) ||
+        c.pays.toLowerCase().includes(q)
+      )
+    );
+  };
+
+  return (
+    <Layout>
+      <section className="hero">
+        <div className="container">
+          <h1>🌍 Découvrez les meilleurs commerçants du monde</h1>
+          <p>Restaurants, boutiques, artisans... Trouvez en 2 clics, où que vous soyez</p>
+          <SearchBar onSearch={handleSearch} />
+          <Link href="/ajouter" className="btn-primary">📢 Ajouter mon commerce gratuitement</Link>
+        </div>
+      </section>
+
+      <section className="stats">
+        <div className="container">
+          <div className="stats-grid">
+            <div className="stat-item"><span className="stat-number">50+</span><span className="stat-label">Pays représentés</span></div>
+            <div className="stat-item"><span className="stat-number">{commerces.length}</span><span className="stat-label">Commerçants inscrits</span></div>
+            <div className="stat-item"><span className="stat-number">1000+</span><span className="stat-label">Visiteurs par mois</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section className="commerces">
+        <div className="container">
+          <h2>🏪 Nos commerçants à la une</h2>
+          {loading ? (
+            <p>Chargement...</p>
+          ) : (
+            <div className="commerce-grid">
+              {filtered.length > 0 ? (
+                filtered.map((commerce) => <CommerceCard key={commerce.id} commerce={commerce} />)
+              ) : (
+                <p>Aucun commerce trouvé</p>
+              )}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="cta">
+        <div className="container">
+          <h2>Votre commerce n'est pas répertorié ?</h2>
+          <Link href="/ajouter" className="btn-primary btn-large">Ajouter mon commerce gratuitement</Link>
+        </div>
+      </section>
+
+      <style jsx global>{`
+        .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 80px 20px; text-align: center; }
+        .hero h1 { font-size: 48px; margin-bottom: 20px; }
+        .hero p { font-size: 20px; margin-bottom: 30px; opacity: 0.9; }
+        .btn-primary { background: white; color: #667eea; padding: 15px 30px; border-radius: 50px; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 20px; }
+        .btn-large { padding: 20px 50px; font-size: 18px; }
+        .stats { background: #f8f9fa; padding: 60px 20px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; text-align: center; }
+        .stat-number { font-size: 48px; font-weight: bold; color: #667eea; display: block; }
+        .stat-label { font-size: 18px; color: #666; }
+        .commerces { padding: 60px 20px; }
+        .commerces h2 { text-align: center; margin-bottom: 40px; font-size: 36px; }
+        .commerce-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .cta { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 80px 20px; text-align: center; }
+        .cta h2 { font-size: 36px; margin-bottom: 30px; }
+        @media (max-width: 768px) { .hero h1 { font-size: 32px; } .stat-number { font-size: 32px; } }
+      `}</style>
+    </Layout>
+  );
+}
